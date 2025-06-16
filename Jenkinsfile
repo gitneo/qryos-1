@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Clone from GitHub') {
             steps {
-                git branch: "${BRANCH}", url: "${GIT_REPO}"
+                git credentialsId: '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',git branch: "${BRANCH}", url: "${GIT_REPO}"
             }
         }
 
