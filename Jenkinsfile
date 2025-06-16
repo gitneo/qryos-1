@@ -3,19 +3,22 @@ pipeline {
 
     environment {
         GIT_REPO = 'https://github.com/gitneo/qryos-1.git'
-        BRANCH = 'master'
+        GIT_BRANCH = 'master'
         APP_NAME = 'qryosr'
         IMAGE_TAG = 'latest'
     }
 
     stages {
-        stage('Clone from GitHub') {
+        stage('Clone Repository') {
             steps {
-                git credentialsId: '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',git branch: "${BRANCH}", url: "${GIT_REPO}"
+                withCredentials([string(credentialsId: 'github-pat', variable: 'GITHUB_TOKEN')]) {
+                    sh "git clone https://${GITHUB_TOKEN}@github.com/your-username/your-repo.git ."
+                    sh "git checkout ${GIT_BRANCH}"
+                }
             }
         }
 
-        stage('Build with Maven') {
+        stage('Build Application') {
             steps {
                 sh 'mvn clean package -DskipTests=false'
             }
@@ -36,10 +39,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ Build and Docker image creation successful!"
+            echo '✅ Pipeline completed successfully.'
         }
         failure {
-            echo "❌ Build failed."
+            echo '❌ Pipeline failed.'
         }
     }
 }
