@@ -1,5 +1,5 @@
 pipeline {
-    agent
+    agent any
 
     environment {
         GIT_REPO = 'https://github.com/gitneo/qryos-1.git'
