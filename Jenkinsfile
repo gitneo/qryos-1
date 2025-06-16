@@ -13,6 +13,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'github-pat', variable: 'GITHUB_TOKEN')]) {
                     sh 'git clone https://${GITHUB_TOKEN}@github.com/your-username/your-repo.git app'
+                    sh 'cd app'
                     sh "git checkout ${GIT_BRANCH}"
                 }
             }
@@ -21,7 +22,7 @@ pipeline {
         stage('Build Application') {
             steps {
                     sh '''
-                        cd app
+//                         cd app
                         mvn clean package -DskipTests=false
                     '''
 //                 sh 'mvn clean package -DskipTests=false'
