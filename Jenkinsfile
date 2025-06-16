@@ -11,21 +11,15 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                withCredentials([string(credentialsId: 'github-pat', variable: 'GITHUB_TOKEN')]) {
-                    sh 'git clone https://${GITHUB_TOKEN}@github.com/your-username/your-repo.git app'
-                    sh 'cd app'
-                    sh "git checkout ${GIT_BRANCH}"
-                }
+                git url: 'https://github.com/gitneo/qryos-1.git',
+                branch: 'master',
+                credentialsId: 'github-pat'
             }
         }
 
         stage('Build Application') {
             steps {
-                    sh '''
-//                         cd app
-                        mvn clean package -DskipTests=false
-                    '''
-//                 sh 'mvn clean package -DskipTests=false'
+                sh 'mvn clean package -DskipTests=false'
             }
         }
 
